@@ -64,3 +64,60 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: python-cicd-test/dist/sxd-v1.1.2-x86_64-${{ github.run_id }}.zip 
+  build-macos-arm:
+    runs-on: macos-14
+    steps:
+      - name: Checkout public repo
+        uses: actions/checkout@v3
+
+      - name: Checkout private repo
+        run: |
+          git config --global url."https://${{ secrets.GH_PAT }}@github.com/".insteadOf "https://github.com/"
+          git clone https://github.com/Lvbey/python-cicd-test.git python-cicd-test
+          ls
+          uname -m
+
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.9'
+          
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('python-cicd-test/requirements4action.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+            
+      - name: Install dependencies
+        run: |
+          cd python-cicd-test
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements4action.txt
+          python -m pip install nuitka pyinstaller pytest
+
+          cp "api-ms-win-crt-util-l1-1-0.dll" "api-ms-win-crt-util-l1-1-0.dylib"
+          cp "libcrypto-win-32-x64_86.dll" "libcrypto-win-32-x64_86.dylib"
+          cp "libcrypto-win-64-x64_86.dll" "libcrypto-win-64-x64_86.dylib"
+          pytest tests.py -s
+
+          python -m nuitka --module win_x86 --include-package=win_x86
+          pyinstaller -w --onedir \
+            --add-data "sxd-logo.png:." \
+            --add-data "api-ms-win-crt-util-l1-1-0.dylib:." \
+            --add-data "libcrypto-win-32-x64_86.dylib:." \
+            --add-data "libcrypto-win-64-x64_86.dylib:." \
+            --add-data "win_x86.cpython-39-darwin.so:." \
+            --icon="sxd-logo.png" \
+            --name "sxd-v1.1.2-arm" \
+            entrance.py --specpath . --noconfirm
+
+          ls dist/sxd-v1.1.2-arm.app
+          
+          ditto -c -k --sequesterRsrc --keepParent dist/sxd-v1.1.2-arm.app dist/sxd-v1.1.2-arm-${{ github.run_id }}.zip
+
+      - name: release artifact    
+        uses: softprops/action-gh-release@v1
+        with:
+          files: python-cicd-test/dist/sxd-v1.1.2-arm-${{ github.run_id }}.zip 
