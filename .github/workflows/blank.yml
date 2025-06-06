@@ -19,6 +19,7 @@ jobs:
       - name: echo uname
         run: |
           uname -m
+          cd python-cicd-test
           
       - name: Set up Python 3.9
         uses: actions/setup-python@v3
