@@ -49,7 +49,7 @@ jobs:
       - name: Install dependencies via mac-arm-environment.yml
         working-directory: ./python-cicd-test
         run: |
-          mamba env create -n sxd -f mac-arm-environment.yml
+          mamba env update -n sxd -f mac-arm-environment.yml
           conda info
           conda list
 
