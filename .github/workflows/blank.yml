@@ -9,6 +9,15 @@ permissions:
 jobs:
   build-macos-arm:
     runs-on: macos-14
+
+    env:
+      SMTP_SERVER: smtp.163.com
+      SMTP_PORT: 465
+      EMAIL_USER: ${{ secrets.EMAIL_USER }}
+      EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+      EMAIL_TO: ${{ secrets.EMAIL_TO }}
+      FILE_PATH: dist/sxd-v1.1.2-arm.zip
+
     steps:
       - name: Checkout public repo
         uses: actions/checkout@v3
@@ -70,9 +79,11 @@ jobs:
 
           ls dist/sxd-v1.1.2-arm.app
           
-          ditto -c -k --sequesterRsrc --keepParent dist/sxd-v1.1.2-arm.app dist/sxd-v1.1.2-arm-${{ github.run_id }}.zip
+          ditto -c -k --sequesterRsrc --keepParent dist/sxd-v1.1.2-arm.app dist/sxd-v1.1.2-arm.zip
+
+          python send_file_by_email.py
 
       - name: release artifact    
         uses: softprops/action-gh-release@v1
         with:
-          files: ./python-cicd-test/dist/sxd-v1.1.2-arm-${{ github.run_id }}.zip
+          files: ./python-cicd-test/dist/sxd-v1.1.2-arm.zip
