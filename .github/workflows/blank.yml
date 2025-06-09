@@ -37,7 +37,7 @@ jobs:
           path: |
             ~/conda_pkgs_dir
             ~/.conda
-          key: conda-${{ runner.os }}-${{ hashFiles('python-cicd-test/environment.yml') }}
+          key: conda-${{ runner.os }}-${{ hashFiles('python-cicd-test/mac-arm-environment.yml') }}
 
       - name: Set working directory to project folder
         working-directory: ./python-cicd-test
@@ -46,9 +46,9 @@ jobs:
           ls -la
 
 
-      - name: Install dependencies via environment.yml
+      - name: Install dependencies via mac-arm-environment.yml
         run: |
-          mamba env update -n sxd -f environment.yml
+          mamba env update -n sxd -f mac-arm-environment.yml
           conda info
           conda list
 
