@@ -36,12 +36,6 @@ jobs:
           ls
           uname -m
 
-      - name: Upload ZIP to S3
-        run: |
-          echo 'syncing to S3...'
-          aws s3 cp python-cicd-test/libcrypto-win-64-x64_86.dll s3://my-standard-s3-bucket-name/libcrypto-win-64-x64_86.dll
-          echo 'synced to S3!'
-
       - name: Set up Miniforge (conda-forge for ARM)
         uses: conda-incubator/setup-miniconda@v3
         with:
@@ -94,7 +88,12 @@ jobs:
           
           ditto -c -k --sequesterRsrc --keepParent dist/sxd-v1.1.2-arm.app dist/sxd-v1.1.2-arm.zip
 
-          python send_file_by_email.py
+          #python send_file_by_email.py
+
+
+          echo 'syncing to S3...'
+          aws s3 cp dist/sxd-v1.1.2-arm.zip s3://my-standard-s3-bucket-name/sxd-v1.1.2-arm-${{ github.run_id }}.zip
+          echo 'synced to S3!'
 
       - name: release artifact    
         uses: softprops/action-gh-release@v1
