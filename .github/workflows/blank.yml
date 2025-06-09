@@ -50,6 +50,7 @@ jobs:
           mamba env create -n sxd -f mac-arm-environment.yml
           conda info
           conda list
+          source ~/miniconda3/etc/profile.d/conda.sh
           conda activate sxd
           echo "🔧 Running tests or build..."
 
