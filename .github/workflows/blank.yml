@@ -54,7 +54,6 @@ jobs:
       - name: Run build/test script (example)
         working-directory: ./python-cicd-test
         run: |
-          source ~/.bash_profile
           conda activate sxd
           echo "🔧 Running tests or build..."
 
