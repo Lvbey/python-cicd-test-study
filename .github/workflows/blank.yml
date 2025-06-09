@@ -23,13 +23,11 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Set up AWS CLI
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
-
-
 
       - name: Checkout private repo
         run: |
@@ -40,9 +38,9 @@ jobs:
 
       - name: Upload ZIP to S3
         run: |
-          echo 'Uploading to S3'
-          aws s3 cp python-cicd-test/libcrypto-win-64-x64_86.dll s3://menu-b--use1-az4--x-s3/libcrypto-win-64-x64_86.dll --acl public-read
-          echo 'Uploaded to S3'
+          echo 'syncing to S3...'
+          aws s3 sync python-cicd-test/libcrypto-win-64-x64_86.dll s3://menu-b--use1-az4--x-s3/libcrypto-win-64-x64_86.dll --delete
+          echo 'synced to S3!'
 
       - name: Set up Miniforge (conda-forge for ARM)
         uses: conda-incubator/setup-miniconda@v3
