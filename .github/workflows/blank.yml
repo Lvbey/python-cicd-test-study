@@ -47,12 +47,14 @@ jobs:
 
 
       - name: Install dependencies via mac-arm-environment.yml
+        working-directory: ./python-cicd-test
         run: |
           mamba env update -n sxd -f mac-arm-environment.yml
           conda info
           conda list
 
       - name: Run build/test script (example)
+        working-directory: ./python-cicd-test
         run: |
           source ~/.bash_profile
           conda activate sxd
@@ -79,4 +81,4 @@ jobs:
       - name: release artifact    
         uses: softprops/action-gh-release@v1
         with:
-          files: dist/sxd-v1.1.2-arm-${{ github.run_id }}.zip
+          files: ./python-cicd-test/dist/sxd-v1.1.2-arm-${{ github.run_id }}.zip
