@@ -58,7 +58,7 @@ jobs:
           cp "api-ms-win-crt-util-l1-1-0.dll" "api-ms-win-crt-util-l1-1-0.dylib"
           cp "libcrypto-win-32-x64_86.dll" "libcrypto-win-32-x64_86.dylib"
           cp "libcrypto-win-64-x64_86.dll" "libcrypto-win-64-x64_86.dylib"
-
+          conda install -y pyinstaller
           pyinstaller -w --onedir \
             --add-data "sxd-logo.png:." \
             --add-data "api-ms-win-crt-util-l1-1-0.dylib:." \
