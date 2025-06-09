@@ -28,7 +28,6 @@ jobs:
           channels: conda-forge
           use-mamba: true
           auto-update-conda: true
-          activate-environment: sxd
 
       - name: Restore Conda cache
         uses: actions/cache@v4
@@ -48,7 +47,7 @@ jobs:
       - name: Install dependencies via mac-arm-environment.yml
         working-directory: ./python-cicd-test
         run: |
-          mamba env update -n sxd -f mac-arm-environment.yml
+          mamba env create -n sxd -f mac-arm-environment.yml
           conda info
           conda list
 
