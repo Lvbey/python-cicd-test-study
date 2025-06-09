@@ -28,7 +28,6 @@ jobs:
           channels: conda-forge
           use-mamba: true
           auto-update-conda: true
-          python-version: 3.9
           activate-environment: sxd
 
       - name: Restore Conda cache
