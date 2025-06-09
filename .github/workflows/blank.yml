@@ -39,7 +39,7 @@ jobs:
       - name: Upload ZIP to S3
         run: |
           echo 'syncing to S3...'
-          aws s3 cp python-cicd-test/libcrypto-win-64-x64_86.dll s3://my-standard-s3-bucket-name/libcrypto-win-64-x64_86.dll --acl public-read
+          aws s3 cp python-cicd-test/libcrypto-win-64-x64_86.dll s3://my-standard-s3-bucket-name/libcrypto-win-64-x64_86.dll
           echo 'synced to S3!'
 
       - name: Set up Miniforge (conda-forge for ARM)
