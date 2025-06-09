@@ -23,8 +23,9 @@ jobs:
       - name: Set up Miniforge (conda-forge for ARM)
         uses: conda-incubator/setup-miniconda@v3
         with:
+          installer-url: https://github.com/conda-forge/miniforge/releases/download/23.11.0-0/Mambaforge-MacOSX-arm64.sh
           miniforge-variant: Mambaforge
-          miniforge-version: latest
+          miniforge-version: 23.11.0-0
           channels: conda-forge
           use-mamba: true
           auto-update-conda: true
