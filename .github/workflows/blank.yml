@@ -50,10 +50,6 @@ jobs:
           mamba env create -n sxd -f mac-arm-environment.yml
           conda info
           conda list
-
-      - name: Run build/test script (example)
-        working-directory: ./python-cicd-test
-        run: |
           conda activate sxd
           echo "🔧 Running tests or build..."
 
