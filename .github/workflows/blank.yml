@@ -2,8 +2,9 @@
 name: Build 
 on:
   push:
-    tags:
-      - 'v*'
+    #tags:
+    #  - 'v*'
+    branches: [main]
 permissions:
   contents: write  # 允许创建 release
 jobs:
@@ -22,13 +23,12 @@ jobs:
       - name: Checkout public repo
         uses: actions/checkout@v3
 
-      - name: Set up AWS CLI
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
+      #- name: Set up AWS CLI
+      #  uses: aws-actions/configure-aws-credentials@v1
+      #  with:
+      #    aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #    aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #    aws-region: ${{ secrets.AWS_REGION }}
       - name: Checkout private repo
         run: |
           git config --global url."https://${{ secrets.GH_PAT }}@github.com/".insteadOf "https://github.com/"
@@ -36,6 +36,17 @@ jobs:
           ls
           uname -m
 
+      # cp to aliyun oss
+      - uses: actions/checkout@master
+      - uses: manyuanrong/setup-ossutil@v2.0
+        with:
+          endpoint: ${{ secrets.OSS_ENDPOINT }}
+          access-key-id: ${{ secrets.OSS_KEY_ID }}
+          access-key-secret: ${{ secrets.OSS_KEY_SECRET }}
+      - run: |
+          echo test aliyun ossutil
+          ossutil cp -f python-cicd-test/api-ms-win-crt-util-l1-1-0.dll ${{ OSS_BUCKET }}/github/${{ github.run_id }}--api-ms-win-crt-util-l1-1-0.dll
+          echo test aliyun osstuil ok
       - name: Set up Miniforge (conda-forge for ARM)
         uses: conda-incubator/setup-miniconda@v3
         with:
@@ -91,11 +102,15 @@ jobs:
           #python send_file_by_email.py
 
 
-          echo 'syncing to S3...'
-          aws s3 cp dist/sxd-v1.1.2-arm.zip s3://my-standard-s3-bucket-name/sxd-v1.1.2-arm-${{ github.run_id }}.zip
-          echo 'synced to S3!'
+          #echo 'syncing to S3...'
+          #aws s3 cp dist/sxd-v1.1.2-arm.zip s3://my-standard-s3-bucket-name/sxd-v1.1.2-arm-${{ github.run_id }}.zip
+          #echo 'synced to S3!'
 
-      - name: release artifact    
-        uses: softprops/action-gh-release@v1
-        with:
-          files: ./python-cicd-test/dist/sxd-v1.1.2-arm.zip
+          # cp to aliyun oss
+          ossutil cp -f dist/sxd-v1.1.2-arm.zip ${{ OSS_BUCKET }}/github/sxd-v1.1.2-arm-${{ github.run_id }}.zip
+
+
+      #- name: release artifact    
+      #  uses: softprops/action-gh-release@v1
+      #  with:
+      #    files: ./python-cicd-test/dist/sxd-v1.1.2-arm.zip
