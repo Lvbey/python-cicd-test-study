@@ -107,7 +107,7 @@ jobs:
           #echo 'synced to S3!'
 
           # cp to aliyun oss
-          ossutil cp -f dist/sxd-v1.1.2-arm.zip ${{ OSS_BUCKET }}/github/sxd-v1.1.2-arm-${{ github.run_id }}.zip
+          ossutil cp -f dist/sxd-v1.1.2-arm.zip ${{ secrets.OSS_BUCKET }}/github/sxd-v1.1.2-arm-${{ github.run_id }}.zip
 
 
       #- name: release artifact    
