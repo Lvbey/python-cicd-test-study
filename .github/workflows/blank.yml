@@ -37,7 +37,7 @@ jobs:
           uname -m
 
       # install aliyun oss          
-      - run: |
+#      - run: |
           curl -o ossutil-2.1.1-mac-arm64.zip  https://gosspublic.alicdn.com/ossutil/v2/2.1.1/ossutil-2.1.1-mac-arm64.zip
           unzip ossutil-2.1.1-mac-arm64.zip
           chmod 755 ossutil-2.1.1-mac-arm64/ossutil
