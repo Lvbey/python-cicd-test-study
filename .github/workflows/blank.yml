@@ -42,19 +42,19 @@ jobs:
           unzip ossutil-2.1.1-mac-arm64.zip
           chmod 755 ossutil-2.1.1-mac-arm64/ossutil
           
-          echo [default] > ossconfig
+#          echo [default] > ossconfig
           echo [default] > ossconfig-cn
-          echo accessKeySecret=${{ secrets.OSS_KEY_SECRET }} >> ossconfig
+#          echo accessKeySecret=${{ secrets.OSS_KEY_SECRET }} >> ossconfig
           echo accessKeySecret=${{ secrets.OSS_KEY_SECRET }} >> ossconfig-cn
-          echo accessKeyId=${{ secrets.OSS_KEY_ID }} >> ossconfig
+#          echo accessKeyId=${{ secrets.OSS_KEY_ID }} >> ossconfig
           echo accessKeyId=${{ secrets.OSS_KEY_ID }} >> ossconfig-cn
-          echo region=ap-southeast-1 >> ossconfig
+#          echo region=ap-southeast-1 >> ossconfig
           echo region=cn-hangzhou >> ossconfig-cn
                     
           #-e ${{ secrets.OSS_ENDPOINT }} -i ${{ secrets.OSS_KEY_ID }} -k ${{ secrets.OSS_KEY_SECRET }}
           
           echo test aliyun ossutil
-          ossutil-2.1.1-mac-arm64/ossutil cp -f python-cicd-test/api-ms-win-crt-util-l1-1-0.dll oss://oss-ap-southeast-1-aliyuncs-com/github/${{ github.run_id }}--api-ms-win-crt-util-l1-1-0.dll -c ossconfig 
+#          ossutil-2.1.1-mac-arm64/ossutil cp -f python-cicd-test/api-ms-win-crt-util-l1-1-0.dll oss://oss-ap-southeast-1-aliyuncs-com/github/${{ github.run_id }}--api-ms-win-crt-util-l1-1-0.dll -c ossconfig
           ossutil-2.1.1-mac-arm64/ossutil cp -f python-cicd-test/api-ms-win-crt-util-l1-1-0.dll oss://serverless-cd-cn-hangzhou-cache-1368179640434305/github/${{ github.run_id }}--api-ms-win-crt-util-l1-1-0.dll -c ossconfig-cn 
 
           echo test aliyun osstuil ok
@@ -120,7 +120,7 @@ jobs:
 
       - name: upload to aliyun oss
         run: |
-          ossutil-2.1.1-mac-arm64/ossutil cp -f python-cicd-test/dist/sxd-v1.1.2-arm.zip oss://oss-ap-southeast-1-aliyuncs-com/github/sxd-v1.1.2-arm-${{ github.run_id }}.zip -c ossconfig
+#          ossutil-2.1.1-mac-arm64/ossutil cp -f python-cicd-test/dist/sxd-v1.1.2-arm.zip oss://oss-ap-southeast-1-aliyuncs-com/github/sxd-v1.1.2-arm-${{ github.run_id }}.zip -c ossconfig
           ossutil-2.1.1-mac-arm64/ossutil cp -f python-cicd-test/dist/sxd-v1.1.2-arm.zip oss://serverless-cd-cn-hangzhou-cache-1368179640434305/github/sxd-v1.1.2-arm-${{ github.run_id }}.zip -c ossconfig-cn
 
       #- name: release artifact    
