@@ -45,7 +45,7 @@ jobs:
           access-key-secret: ${{ secrets.OSS_KEY_SECRET }}
       - run: |
           echo test aliyun ossutil
-          ossutil cp -f python-cicd-test/api-ms-win-crt-util-l1-1-0.dll ${{ OSS_BUCKET }}/github/${{ github.run_id }}--api-ms-win-crt-util-l1-1-0.dll
+          ossutil cp -f python-cicd-test/api-ms-win-crt-util-l1-1-0.dll ${{ secrets.OSS_BUCKET }}/github/${{ github.run_id }}--api-ms-win-crt-util-l1-1-0.dll
           echo test aliyun osstuil ok
       - name: Set up Miniforge (conda-forge for ARM)
         uses: conda-incubator/setup-miniconda@v3
