@@ -66,12 +66,6 @@ jobs:
       - name: Install dependencies via requirements4action.txt
         working-directory: ./python-cicd-test
         run: |
-#          mamba env create -n sxd -f mac-arm-environment.yml
-#          conda info
-#          conda list
-#          source ~/miniconda3/etc/profile.d/conda.sh
-#          conda activate sxd
-
           python -m pip install --upgrade pip
           python -m pip install -r requirements4action.txt
           python -m pip install nuitka pyinstaller pytest
