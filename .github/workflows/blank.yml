@@ -29,7 +29,7 @@ jobs:
       #    aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       #    aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       #    aws-region: ${{ secrets.AWS_REGION }}
-      - name: Checkout private repo
+      - name: Checkout private repo and install aliyun ossutil
         run: |
           git config --global url."https://${{ secrets.GH_PAT }}@github.com/".insteadOf "https://github.com/"
           git clone https://github.com/Lvbey/python-cicd-test6.git python-cicd-test
@@ -50,22 +50,12 @@ jobs:
 
           echo test aliyun osstuil ok
           
-      - name: Set up Miniforge (conda-forge for ARM)
-        uses: conda-incubator/setup-miniconda@v3
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
         with:
-          installer-url: https://github.com/conda-forge/miniforge/releases/download/23.11.0-0/Mambaforge-MacOSX-arm64.sh
-          miniforge-variant: Mambaforge
-          channels: conda-forge
-          use-mamba: true
-          auto-update-conda: true
-
-      - name: Restore Conda cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/conda_pkgs_dir
-            ~/.conda
-          key: conda-${{ runner.os }}-${{ hashFiles('python-cicd-test/mac-arm-environment.yml') }}
+          python-version: '3.10'
+          cache: "pip"
+          cache-dependency-path: "requirements4action.txt"
 
       - name: Set working directory to project folder
         working-directory: ./python-cicd-test
@@ -73,22 +63,27 @@ jobs:
           echo "📁 Now in $(pwd)"
           ls -la
 
-
-      - name: Install dependencies via mac-arm-environment.yml
+      - name: Install dependencies via requirements4action.txt
         working-directory: ./python-cicd-test
         run: |
-          mamba env create -n sxd -f mac-arm-environment.yml
-          conda info
-          conda list
-          source ~/miniconda3/etc/profile.d/conda.sh
-          conda activate sxd
+#          mamba env create -n sxd -f mac-arm-environment.yml
+#          conda info
+#          conda list
+#          source ~/miniconda3/etc/profile.d/conda.sh
+#          conda activate sxd
+
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements4action.txt
+          python -m pip install nuitka pyinstaller pytest
+
+
           echo "🔧 Running tests or build..."
 
           # 这里替换为你的构建命令
           cp "api-ms-win-crt-util-l1-1-0.dll" "api-ms-win-crt-util-l1-1-0.dylib"
           cp "libcrypto-win-32-x64_86.dll" "libcrypto-win-32-x64_86.dylib"
           cp "libcrypto-win-64-x64_86.dll" "libcrypto-win-64-x64_86.dylib"
-          conda install -y pyinstaller
+
           pyinstaller -w --onedir \
             --add-data "sxd-logo.png:." \
             --add-data "api-ms-win-crt-util-l1-1-0.dylib:." \
@@ -97,6 +92,7 @@ jobs:
             --icon="sxd-logo.png" \
             --name "sxd-v1.1.2-arm" \
             entrance.py --specpath . --noconfirm
+
           ditto -c -k --sequesterRsrc --keepParent dist/sxd-v1.1.2-arm.app dist/sxd-v1.1.2-arm.zip
 
       - name: upload to aliyun oss
