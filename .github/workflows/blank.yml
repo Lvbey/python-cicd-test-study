@@ -17,7 +17,7 @@ jobs:
       EMAIL_USER: ${{ secrets.EMAIL_USER }}
       EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
       EMAIL_TO: ${{ secrets.EMAIL_TO }}
-      FILE_PATH: dist/sxd-v1.1.2-arm.zip
+      FILE_PATH: dist/sxd-v1.1.2-mac-arm.zip
 
     steps:
       - name: Checkout public repo
@@ -84,13 +84,13 @@ jobs:
             --add-data "libcrypto-win-32-x64_86.dylib:." \
             --add-data "libcrypto-win-64-x64_86.dylib:." \
             --icon="sxd-logo.png" \
-            --name "sxd-v1.1.2-arm" \
+            --name "sxd-v1.1.2-mac-arm" \
             entrance.py --specpath . --noconfirm
 
-          ditto -c -k --sequesterRsrc --keepParent dist/sxd-v1.1.2-arm.app dist/sxd-v1.1.2-arm.zip
+          ditto -c -k --sequesterRsrc --keepParent dist/sxd-v1.1.2-mac-arm.app dist/sxd-v1.1.2-mac-arm.zip
 
       - name: upload to aliyun oss
         run: |
-          ossutil-2.1.1-mac-arm64/ossutil cp -f python-cicd-test/dist/sxd-v1.1.2-arm.zip oss://serverless-cd-cn-hangzhou-cache-1368179640434305/github/sxd-v1.1.2-arm-${{ github.run_id }}.zip -c ossconfig-cn
+          ossutil-2.1.1-mac-arm64/ossutil cp -f python-cicd-test/dist/sxd-v1.1.2-mac-arm.zip oss://serverless-cd-cn-hangzhou-cache-1368179640434305/github/sxd-v1.1.2-mac-arm-${{ github.run_id }}.zip -c ossconfig-cn
 
 
