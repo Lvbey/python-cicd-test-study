@@ -58,7 +58,7 @@ jobs:
         run: |
           echo "📁 Now in $(pwd)"
           ls -la
-          VERSION=$(cat _VERSION)
+          VERSION=$(cat app_version)
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "VERSION=$VERSION"
 
