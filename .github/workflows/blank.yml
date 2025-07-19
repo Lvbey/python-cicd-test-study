@@ -79,6 +79,7 @@ jobs:
           cp "libcrypto-win-64-x64_86.dll" "libcrypto-win-64-x64_86.dylib"
 
           pyinstaller -w --onedir \
+            --add-data "app_version:." \
             --add-data "sxd-logo.png:." \
             --add-data "api-ms-win-crt-util-l1-1-0.dylib:." \
             --add-data "libcrypto-win-32-x64_86.dylib:." \
