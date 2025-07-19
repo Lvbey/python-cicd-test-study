@@ -43,7 +43,8 @@ jobs:
           echo accessKeySecret=${{ secrets.OSS_KEY_SECRET }} >> ossconfig-cn
           echo accessKeyId=${{ secrets.OSS_KEY_ID }} >> ossconfig-cn
           echo region=cn-hangzhou >> ossconfig-cn
-          
+
+
       - name: Set up Python 3.10
         uses: actions/setup-python@v5
         with:
